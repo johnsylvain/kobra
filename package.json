@@ -6,7 +6,7 @@
   "main": "dist/kobra.cjs.js",
   "module": "dist/kobra.esm.js",
   "browser": "dist/kobra.umd.js",
-  "source": "index.js",
+  "source": "src/index.js",
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",

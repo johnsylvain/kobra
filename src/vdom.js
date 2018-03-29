@@ -1,9 +1,17 @@
-function extend (obj, props) {
-  for (let i in props) obj[i] = props[i]
-  return obj
+export function h (nodeName, attributes) {
+  let rest = []
+  let length = arguments.length
+
+  while (length-- > 2) rest.push(arguments[length])
+
+  return {
+    nodeName,
+    attributes: attributes || {},
+    children: [].concat.apply([], rest.reverse())
+  }
 }
 
-function diff (parent, newNode, oldNode) {
+export function diff (parent, newNode, oldNode) {
   newNode = createVDOM(newNode)
   idiff(parent, newNode, oldNode)
   return newNode
@@ -14,7 +22,7 @@ function createVDOM (vnode) {
     extend({}, vnode),
     {
       children: (vnode.children || [])
-        .map(child => 
+        .map(child =>
           typeof child === 'string' || child === 'number'
             ? child
             : createVDOM(child)
@@ -23,11 +31,11 @@ function createVDOM (vnode) {
   )
 
   return (typeof vnode === 'function')
-    ? createVDOM(vnode.nodeName(vnode.attributes, vnode.children)
+    ? createVDOM(vnode.nodeName(vnode.attributes, vnode.children))
     : newVNode
 }
 
-function idiff (parent, newNode, oldNode, index = 0) {
+function idiff (parent, newNode, oldNode, index=0) {
   if (!oldNode) {
     parent.appendChild(createElement(newNode))
   }
@@ -55,29 +63,3 @@ function idiff (parent, newNode, oldNode, index = 0) {
     }
   }
 }
-
-export function Kobra () {
-  if (!(this instanceof Kobra)) return new Kobra()
-  
-  this.__vdom__ = null
-  this.__state__ = null
-}
-
-extend(Kobra.prototype, { 
-  use (middleware) {
-    
-  },
-
-  route (path, handler) {
-    if (typeof path === 'function')
-      return this.route('*', path)
-
-    const params = path
-      .split('/')
-      .filter(s => s.test(/^:/))
-  },
-
-  mount (parent) {
-    this.__vdom__ = diff(parent, this.__vdom__)
-  }
-})
