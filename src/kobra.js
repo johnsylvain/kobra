@@ -1,5 +1,5 @@
 import { extend } from './util'
-import { diff } from './vdom'
+import { patch } from './vdom'
 
 export function Kobra () {
   if (!(this instanceof Kobra)) return new Kobra()
