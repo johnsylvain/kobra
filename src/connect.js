@@ -1,6 +1,7 @@
 import { extend } from './util'
+import { scheduleRender } from './render'
 
-function connect (state, actions) {
+export function connect (state, actions) {
   let globalState = extend({}, state)
   let mappedActions = extend({}, actions)
 
@@ -11,7 +12,9 @@ function connect (state, actions) {
           data = data(globalState, mappedActions)
 
         if (data && data !== globalState && !data.then) {
-          globalState = extend({}, data)
+          scheduleRender(
+            globalState = extend({}, data)
+          )
         }
 
         return data
@@ -19,7 +22,8 @@ function connect (state, actions) {
     })(key, mappedActions[key])
   }
 
-  return function (view) {
-    view(globalState, mappedActions)
+  return {
+    state: globalState,
+    actions: mappedActions
   }
 }
