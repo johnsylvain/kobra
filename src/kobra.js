@@ -2,9 +2,10 @@ import { parse, exec, match } from 'matchit'
 import { extend } from './util'
 import { render } from './render'
 
-export function Kobra () {
-  if (!(this instanceof Kobra)) return new Kobra()
+export function Kobra (opts) {
+  if (!(this instanceof Kobra)) return new Kobra(opts)
 
+  this.opts = opts || {}
   this.container = undefined
   this.state = {}
   this.actions = {}
@@ -16,7 +17,9 @@ export function Kobra () {
 
 extend(Kobra.prototype, {
   _render () {
-    const path = document.location.hash.substring(1) || '/'
+    const path = this.opts.router === 'history'
+      ? document.location.pathname
+      : document.location.hash.substring(1) || '/'
     const arr = match(path, this.views.routes)
     const view = this.views.handlers[(arr[0] || {}).old || path]
 
@@ -37,9 +40,8 @@ extend(Kobra.prototype, {
             data = data(this.state, this.actions)
 
           if (data && data !== this.state && !data.then) {
-            this._render(
-              extend(this.state, data)
-            )
+            extend(this.state, data)
+            this._render()
           }
 
           return data
@@ -56,7 +58,10 @@ extend(Kobra.prototype, {
 
   mount (parent) {
     this.container = parent
-    const events = ['hashchange', 'load']
+    const events = [
+      'load',
+      this.opts.router === 'history' ? 'popstate' : 'hashchange'
+    ]
 
     events.forEach(event => {
       window.addEventListener(event, this._render.bind(this))
