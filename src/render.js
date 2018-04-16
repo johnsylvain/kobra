@@ -1,4 +1,4 @@
-import { diff } from './vdom'
+import { diff } from './diff'
 
 let tree = null
 

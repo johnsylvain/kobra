@@ -1,4 +1,4 @@
-import { h } from './vdom'
+import { h } from './h'
 import { Kobra } from './kobra'
 
 export {
