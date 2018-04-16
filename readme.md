@@ -11,12 +11,12 @@ import { h, Kobra } from 'kobra'
 
 const app = new Kobra()
 
-app.route('/hello/:name', (state, actions) => {
+app.route('/hello/:name', (state, actions) => (
   <div>
     <h1>Hello, {state.params.name || 'World'}</h1>
     <button onClick={actions.inc}>+{state.count}</button>
   </div>
-})
+))
 
 const state = {
   count: 0
