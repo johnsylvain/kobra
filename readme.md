@@ -1,5 +1,6 @@
 # Kobra
-> Minimal frontend framework inspired by the ELM architecture.
+![API Stability](https://img.shields.io/badge/stability-experimental-orange.svg)
+> Minimal frontend framework inspired by the ELM architecture
 
 ## Features
 - Efficient Virtual DOM diffing
@@ -8,6 +9,8 @@
 ## Usage
 ```js
 import { h, Kobra } from 'kobra'
+
+/** @jsx h */
 
 const app = new Kobra()
 
@@ -30,20 +33,5 @@ app.connect(state, actions)
 app.mount(document.querySelector('#app'))
 ```
 
-## Lifecycle hooks
-```jsx
-<div hook={{
-  mount: () => {},
-  destroy: () => {}
-}}></div>
-```
-
-| Hook                        | When it gets called                              |
-|-----------------------------|--------------------------------------------------|
-| `mount`                     | before the element gets mounted to the DOM       |
-| `destroy`                   | before the element gets removed from the DOM     |
-
 ## Routing
-Kobra currently implements a hash based router.
-
-TODO: use a history based browser router
+Kobra currently uses a hash based router.
