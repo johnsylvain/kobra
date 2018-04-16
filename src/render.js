@@ -1,17 +1,8 @@
-import { patch } from './vdom'
+import { diff } from './vdom'
 
-const internals = {
-  vdom: null,
-  parent: null
-}
-
-export function scheduleRender (vnodes) {
-  setTimeout(
-    render(vnodes, internals.parent)
-  )
-}
+let tree = null
 
 export function render (vnodes, parent) {
-  patch(parent, vnodes, internals.vdom)
-  internals.vdom = vnodes
+  diff(parent, vnodes, tree)
+  tree = vnodes
 }

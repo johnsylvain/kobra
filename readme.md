@@ -1,25 +1,29 @@
 # Kobra
 > Minimal frontend framework inspired by the ELM architecture.
 
-## API
+## Features
+- Efficient Virtual DOM diffing
+- Shared state across routes
+
+## Usage
 ```js
 import { h, Kobra } from 'kobra'
 
 const app = new Kobra()
 
-app.route('/', (state, actions) => (
+app.route('/hello/:name', (state, actions) => {
   <div>
-    <h1>{state.count}</h1>
-    <button onClick={actions.inc}>+</button>
+    <h1>Hello, {state.params.name || 'World'}</h1>
+    <button onClick={actions.inc}>+{state.count}</button>
   </div>
-))
+})
 
 const state = {
   count: 0
 }
 
 const actions = {
-  inc: ({ count }) => () => ({ count: count + 1 })
+  inc: () => ({ count }) => ({ count: count + 1 })
 }
 
 app.connect(state, actions)

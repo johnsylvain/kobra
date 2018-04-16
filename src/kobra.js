@@ -1,63 +1,65 @@
+import { parse, exec, match } from 'matchit'
 import { extend } from './util'
 import { render } from './render'
 
 export function Kobra () {
   if (!(this instanceof Kobra)) return new Kobra()
 
-  this.app = {
-    state: {},
-    actions: {},
-    views: {
-      current: undefined,
-      paths: {}
-    }
+  this.container = undefined
+  this.state = {}
+  this.actions = {}
+  this.views = {
+    routes: [],
+    handlers: {}
   }
 }
 
 extend(Kobra.prototype, {
+  _render () {
+    const path = document.location.hash.substring(1) || '/'
+    const arr = match(path, this.views.routes)
+    const view = this.views.handlers[(arr[0] || {}).old || path]
+
+    if (arr.length)
+      extend(this.state, { params: exec(path, arr) })
+
+    render(view(this.state, this.actions), this.container)
+  },
+
   connect (state, actions) {
-    this.app.state = extend({}, state)
-    this.app.actions = extend({}, actions)
+    this.state = extend({}, state)
+    this.actions = extend({}, actions)
 
-    for (let key in this.app.actions) {
-      (function (key, action) {
-        this.app.actions[key] = function (data) {
+    for (let key in this.actions) {
+      ((key, action) => {
+        this.actions[key] = (data) => {
           if (typeof (data = action(data)) === 'function')
-            data = data(globalState, this.app.actions)
+            data = data(this.state, this.actions)
 
-          if (data && data !== globalState && !data.then) {
-            scheduleRender(
-              globalState = extend({}, data)
+          if (data && data !== this.state && !data.then) {
+            this._render(
+              extend(this.state, data)
             )
           }
 
           return data
         }
-      })(key, this.app.actions[key])
+      })(key, this.actions[key])
     }
   },
 
-  route (path, view) {
-    extend(this.app.views.paths, {
-      [path]: view
-    })
+  route (pattern, handler) {
+    this.views.routes.push(parse(pattern))
+    this.views.handlers[pattern] = handler
+    return this
   },
 
   mount (parent) {
-    const getCurrentPath = () => {
-      const path = document.location.pathname
-      return path.substring(path.lastIndexOf('/'))
-    }
+    this.container = parent
+    const events = ['hashchange', 'load']
 
-    window.addEventListener('hashchange load', (event) => {
-      const { state, actions, views } = this.app
-      const path = getCurrentPath()
-
-      const view = views.paths[path]
-      this.app.views.current = path
-
-      render(view(state, actions), parent)
+    events.forEach(event => {
+      window.addEventListener(event, this._render.bind(this))
     })
-
   }
 })

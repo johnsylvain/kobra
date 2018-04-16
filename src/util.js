@@ -3,6 +3,4 @@ export function extend (obj, props) {
   return obj
 }
 
-export function flatten (arr) {
-  return [].concat.apply([], arr)
-}
+export function noop () {}
