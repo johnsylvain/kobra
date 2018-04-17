@@ -1,12 +1,6 @@
-import { extend } from './util'
 import { createElement } from './create-element'
 
-export function diff (parent, newNode, oldNode) {
-  newNode = createVDOM(newNode)
-  idiff(parent, newNode, oldNode)
-}
-
-function idiff (parent, newNode, oldNode, index = 0) {
+export function diff (parent, newNode, oldNode, index = 0) {
   if (!oldNode) {
     parent.appendChild(createElement(newNode))
   }
@@ -25,7 +19,7 @@ function idiff (parent, newNode, oldNode, index = 0) {
       oldNode.children.length
     )
     for (let i = 0; i < length; i++) {
-      idiff(
+      diff(
         parent.childNodes[index],
         newNode.children[i],
         oldNode.children[i],
@@ -33,24 +27,6 @@ function idiff (parent, newNode, oldNode, index = 0) {
       )
     }
   }
-}
-
-function createVDOM (vnode) {
-  const newVNode = extend(
-    extend({}, vnode),
-    {
-      children: (vnode.children || [])
-        .map((child) =>
-          typeof child === 'string' || typeof child === 'number'
-            ? child
-            : createVDOM(child)
-        )
-    }
-  )
-
-  return (typeof vnode.nodeName === 'function')
-    ? createVDOM(vnode.nodeName(vnode.attributes, vnode.children))
-    : newVNode
 }
 
 function changed (node1, node2) {

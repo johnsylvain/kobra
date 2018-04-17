@@ -41,7 +41,7 @@ extend(Kobra.prototype, {
 
           if (data && data !== this.state && !data.then) {
             extend(this.state, data)
-            this._render()
+            setTimeout(this._render.bind(this))
           }
 
           return data
