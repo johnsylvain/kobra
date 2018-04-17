@@ -29,9 +29,8 @@ extend(Kobra.prototype, {
     render(view(this.state, this.actions), this.container)
   },
 
-  connect (state, actions) {
-    this.state = extend({}, state)
-    this.actions = extend({}, actions)
+  use (store) {
+    store(this.state, this.actions)
 
     for (let key in this.actions) {
       ((key, action) => {

@@ -16,20 +16,16 @@ const app = new Kobra()
 
 app.route('/hello/:name', (state, actions) => (
   <div>
-    <h1>Hello, {state.params.name || 'World'}</h1>
+    <h1>Hello, {state.params.name}</h1>
     <button onClick={actions.inc}>+{state.count}</button>
   </div>
 ))
 
-const state = {
-  count: 0
-}
+app.use((state, actions) => {
+  state.count = 0
+  actions.inc = (event) => ({ count }) => ({ count: count + 1 })
+})
 
-const actions = {
-  inc: () => ({ count }) => ({ count: count + 1 })
-}
-
-app.connect(state, actions)
 app.mount(document.querySelector('#app'))
 ```
 
