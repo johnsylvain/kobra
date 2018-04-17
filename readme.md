@@ -5,6 +5,7 @@
 ## Features
 - Efficient Virtual DOM diffing
 - Shared state across routes
+- Simple API (3 methods)
 
 ## Usage
 ```js
@@ -29,5 +30,22 @@ app.use((state, actions) => {
 app.mount(document.querySelector('#app'))
 ```
 
+## Methods
+### `route(path: String, handler: Function)`
+> Specify a view to be rendered on a path. The handler receives the `state` and `actions` as the arguments.
+>
+> Route parameters will be passed through the `state` argument as `state.params`
+
+### `use(store: Function)`
+> The store initializes the state and defines the actions. The store function receives `state` and `actions` as the first two arguments and methods/values can be directly attached to these arguments.
+>
+> __Note:__ The `use` method is optional if you do not need state or actions in your application.
+
+### `mount(selector: DOMNode)`
+> Mount the application and start listening to route changes
+
 ## Routing
-Kobra currently uses a hash based router.
+__Note:__ Kobra currently uses a hash router.
+
+## License
+[MIT](https://github.com/johnsylvain/kobra/blob/master/license)
