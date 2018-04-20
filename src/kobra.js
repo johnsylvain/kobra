@@ -40,7 +40,7 @@ extend(Kobra.prototype, {
 
           if (data && data !== this.state && !data.then) {
             extend(this.state, data)
-            setTimeout(this._render.bind(this))
+            setTimeout(() => this._render())
           }
 
           return data
@@ -56,14 +56,14 @@ extend(Kobra.prototype, {
   },
 
   mount (parent) {
-    this.container = parent
     const events = [
       'load',
       this.opts.router === 'history' ? 'popstate' : 'hashchange'
     ]
+    this.container = parent
 
     events.forEach(event => {
-      window.addEventListener(event, this._render.bind(this))
+      window.addEventListener(event, () => this._render())
     })
   }
 })
