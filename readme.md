@@ -47,5 +47,22 @@ app.mount(document.querySelector('#app'))
 ## Routing
 __Note:__ Kobra currently uses a hash router.
 
+Route patterns are defined in the first argument in the `route` method. Parameters are denoted with the `:` prefix. Parameter values are passed into the view through the `state.params` object.
+
+## Development
+```bash
+# install deps
+yarn
+
+# run tests
+yarn test
+
+# build dist
+yarn build
+
+# release to npm
+yarn publish
+```
+
 ## License
 [MIT](https://github.com/johnsylvain/kobra/blob/master/license)
