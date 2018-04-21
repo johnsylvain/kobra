@@ -11,17 +11,24 @@
     "build": "rollup -c",
     "dev": "rollup -c -w",
     "release": "npm t && git commit -am $npm_package_version && git tag $npm_package_version && git push && git push --tags && npm publish",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build",
+    "lint": "eslint --ignore-path .gitignore --ignore-path .prettierignore \"src/*.{js,jsx}\"",
+    "lint:fix": "yarn lint --fix"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-preset-env": "^1.6.1",
+    "eslint": "4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-config-prettier": "2.9.0",
+    "eslint-plugin-import": "^2.11.0",
+    "eslint-plugin-prettier": "2.6.0",
+    "prettier": "1.12.1",
     "rollup": "^0.50.0",
     "rollup-plugin-babel": "^3.0.3",
     "rollup-plugin-commonjs": "^8.2.6",
     "rollup-plugin-node-resolve": "^3.0.2",
-    "rollup-plugin-uglify": "^3.0.0",
-    "standard": "^10.0.3"
+    "rollup-plugin-uglify": "^3.0.0"
   },
   "dependencies": {
     "matchit": "^1.0.5"
