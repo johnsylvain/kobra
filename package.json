@@ -10,10 +10,17 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "release": "npm t && git commit -am $npm_package_version && git tag $npm_package_version && git push && git push --tags && npm publish",
+    "release":
+      "npm t && git commit -am $npm_package_version && git tag $npm_package_version && git push && git push --tags && npm publish",
     "prepublish": "npm run build",
-    "lint": "eslint --ignore-path .gitignore --ignore-path .prettierignore \"src/*.{js,jsx}\"",
-    "lint:fix": "yarn lint --fix"
+    "precommit": "lint-staged",
+    "lint":
+      "eslint --ignore-path .gitignore --ignore-path .prettierignore \"src/*.{js,jsx}\"",
+    "lint:fix": "npm run lint --fix"
+  },
+  "lint-staged": {
+    "*.{js}": ["eslint --fix", "git add"],
+    "*.{json,md,scss}": ["prettier --write", "git add"]
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
