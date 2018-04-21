@@ -1,7 +1,7 @@
 import { Kobra } from '../src/kobra';
 import { extend } from '../src/util';
 
-describe('[api] Kobra', function () {
+describe('[api] Kobra', function() {
   let spy;
 
   beforeEach(() => {

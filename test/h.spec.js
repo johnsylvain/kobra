@@ -4,25 +4,27 @@ describe('[jsx] h', () => {
   it('creates a vdom node', () => {
     const node = h('div');
     expect(node).toHaveProperty('nodeName', 'div');
-		expect(node).toHaveProperty('attributes', {});
-		expect(node).toHaveProperty('children', []);
+    expect(node).toHaveProperty('attributes', {});
+    expect(node).toHaveProperty('children', []);
   });
 
   it('preserves attributes', () => {
     const node = h('div', { id: 'foo' });
-    expect(node.attributes.id).toBe('foo')
-  })
+    expect(node.attributes.id).toBe('foo');
+  });
 
   it('flattens children nodes', () => {
-    const node = h('div', {}, h('p'), h('p'))
-    expect(node.children).toBeInstanceOf(Array)
-    expect(node.children.length).toBe(2)
-  })
+    const node = h('div', {}, h('p'), h('p'));
+    expect(node.children).toBeInstanceOf(Array);
+    expect(node.children.length).toBe(2);
+  });
 
   it('supports nested children', () => {
-    const m = x => h(x)
+    const m = x => h(x);
 
-    expect(h('foo', null, h('a'), [m('b'), m('c')], m('d')))
-      .toHaveProperty('children', ['a', 'b', 'c', 'd'].map(m))
+    expect(h('foo', null, h('a'), [m('b'), m('c')], m('d'))).toHaveProperty(
+      'children',
+      ['a', 'b', 'c', 'd'].map(m)
+    );
   });
 });
