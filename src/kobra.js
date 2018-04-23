@@ -24,7 +24,10 @@ extend(Kobra.prototype, {
     const arr = match(path, this.views.routes);
     const view = this.views.handlers[(arr[0] || {}).old || path];
 
-    if (arr.length) extend(this.state, { params: exec(path, arr) });
+    if (arr.length)
+      extend(this.state, {
+        params: exec(path, arr)
+      });
 
     render(view(this.state, this.actions), this.container);
   },
@@ -40,7 +43,7 @@ extend(Kobra.prototype, {
 
           if (data && data !== this.state && !data.then) {
             extend(this.state, data);
-            setTimeout(this._render.bind(this));
+            setTimeout(() => this._render());
           }
 
           return data;
