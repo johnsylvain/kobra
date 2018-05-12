@@ -62,6 +62,30 @@ app.mount(document.querySelector('#app'));
 
 > Mount the application and start listening to route changes
 
+## Components
+
+A Kobra component is simply a function that you use within your views. Components receive `props` and `children` as arguments.
+
+```js
+const Page = (props, children) => (
+  <div>
+    <nav>
+      <a href="#/">Home</a>
+      <a href="#/about">about</a>
+    </nav>
+    <div>
+      {children}
+    </div>
+  </div>
+)
+
+app.route('/', (state, dispatch) => (
+  <Page>
+    <h1>Home</h1>
+  </Page>
+))
+```
+
 ## Asynchronous actions
 
 Async actions are accomplished by dispatching the action from within callback or promise of an async function.
