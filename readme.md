@@ -1,22 +1,26 @@
 # Kobra
+
 ![API Stability](https://img.shields.io/badge/stability-experimental-orange.svg)
+
 > Minimal frontend framework
 
 ## Features
-- Efficient Virtual DOM diffing
-- Shared state across routes
-- Redux style actions
-- Simple API (3 methods)
+
+* Efficient Virtual DOM diffing
+* Shared state across routes
+* Redux style actions
+* Simple API (3 methods)
 
 ## Usage
-```js
-import { h, Kobra } from 'kobra'
 
-const app = new Kobra()
+```js
+import { h, Kobra } from 'kobra';
+
+const app = new Kobra();
 
 const initialState = {
   count: 0
-}
+};
 
 /** @jsx h */
 app.route('/hello/:name', (state, dispatch) => (
@@ -24,42 +28,72 @@ app.route('/hello/:name', (state, dispatch) => (
     <h1>Hello, {state.params.name}</h1>
     <button onClick={() => dispatch({ type: 'INC' })}>+{state.count}</button>
   </div>
-))
+));
 
 app.use((state = initialState, action) => {
   switch (action.type) {
     case 'INC':
-      return { ...state, count: state.count + 1 }
+      return { ...state, count: state.count + 1 };
     default:
-      return state
+      return state;
   }
-})
+});
 
-app.mount(document.querySelector('#app'))
+app.mount(document.querySelector('#app'));
 ```
 
 ## Methods
+
 ### `route(path: String, handler: Function)`
+
 > Specify a view to be rendered on a path. The handler receives the `state` and `actions` as the arguments.
 >
 > Route parameters will be passed through the `state` argument as `state.params`
 
 ### `use(reducer: Function)`
+
 > The reducer initializes the state and defines how the actions create the next state. The reducer function receives `state` and `action` as the first two arguments.
 >
 > The `action` requires the property `type`. A `payload` may be also be defined.
 >
-> __Note:__ The `use` method is optional if you do not need state or actions in your application.
+> **Note:** The `use` method is optional if you do not need state or actions in your application.
 
 ### `mount(selector: DOMNode)`
+
 > Mount the application and start listening to route changes
 
+## Asynchronous actions
+
+Async actions are accomplished by dispatching the action from within callback or promise of an async function.
+
+```js
+const view = (state, dispatch) => (
+  <h1 onClick={() => asyncChange(dispatch)}>{state.text || 'Loading...'}</h1>
+);
+
+const asyncChange = dispatch => {
+  setTimeout(() => {
+    dispatch({ type: 'UPDATE_TEXT', payload: { text: 'Loaded' } });
+  }, 1000);
+};
+```
+
+## Lifecycle Hooks
+
+Lifecycle hooks can be attacted to any DOM node. All hooks are placed inside the `hook` attribute.
+
+Available hooks:
+
+* `mount`: gets called when the node is being created.
+
 ## Routing
-__Note:__ Kobra currently uses a hash router.
+
+**Note:** Kobra currently uses a hash router.
 
 Route patterns are defined in the first argument in the `route` method. Parameters are denoted with the `:` prefix. Parameter values are passed into the view through the `state.params` object.
 
 ## Development
+
 ```bash
 # install deps
 yarn
@@ -75,4 +109,5 @@ yarn publish
 ```
 
 ## License
+
 [MIT](https://github.com/johnsylvain/kobra/blob/master/license)

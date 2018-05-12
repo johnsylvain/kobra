@@ -19,28 +19,48 @@ describe('[api] Kobra', function() {
     expect(this.app).toBeInstanceOf(Kobra);
   });
 
-  it('attaches state and actions from store', () => {
-    const store = (state, actions) => {
-      state.foo = 'bar';
-      actions.test = () => ({ foo }) => ({ foo: 'baz' });
+  it('sets the initial state', () => {
+    const initialState = { foo: 'bar' };
+    const reducer = (state = initialState, action) => {
+      switch (action.type) {
+        default:
+          return state;
+      }
     };
 
-    this.app.use(store);
+    this.app.use(reducer);
 
     expect(this.app.state).toHaveProperty('foo', 'bar');
-    expect(this.app.actions).toHaveProperty('test');
-    expect(this.app.actions.test).toBeInstanceOf(Function);
   });
 
-  xit('schedules render when an action is dispatched', () => {
-    spy = jest.spyOn(this.app, '_render');
-    const store = (state, actions) => {
-      state.foo = 'bar';
-      actions.test = () => ({ foo }) => ({ foo: 'baz' });
+  it('dispatches actions', () => {
+    const reducer = (state = {}, action) => {
+      switch (action.type) {
+        case 'TEST':
+          return Object.assign({}, state, { test: 'test' });
+        default:
+          return state;
+      }
     };
 
-    this.app.use(store);
-    this.app.actions.test();
+    this.app.use(reducer);
+    this.app.dispatch({ type: 'TEST' });
+    expect(this.app.state).toHaveProperty('test', 'test');
+  });
+
+  xit('schedules a render when an action is dispatched', () => {
+    spy = jest.spyOn(this.app, 'render');
+    const reducer = (state = {}, action) => {
+      switch (action.type) {
+        case 'TEST':
+          return Object.assign({}, state, { test: 'test' });
+        default:
+          return state;
+      }
+    };
+
+    this.app.use(reducer);
+    this.app.dispatch({ type: 'TEST' });
 
     expect(spy).toHaveBeenCalled();
   });
