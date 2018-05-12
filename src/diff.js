@@ -8,6 +8,11 @@ export function diff(parent, newNode, oldNode, index = 0) {
   } else if (changed(newNode, oldNode)) {
     parent.replaceChild(createElement(newNode), parent.childNodes[index]);
   } else if (newNode.nodeName) {
+    updateAttributes(
+      parent.childNodes[index],
+      newNode.attributes,
+      oldNode.attributes
+    );
     const length = Math.max(newNode.children.length, oldNode.children.length);
     for (let i = 0; i < length; i++) {
       diff(
@@ -17,6 +22,40 @@ export function diff(parent, newNode, oldNode, index = 0) {
         i
       );
     }
+  }
+}
+
+function updateAttributes(target, newAttributes, oldAttributes = {}) {
+  const attributes = Object.assign({}, newAttributes, oldAttributes);
+  Object.keys(attributes).forEach(name => {
+    if (!newAttributes[name]) {
+      removeAttribute(target, name, oldAttributes[name]);
+    } else if (
+      !oldAttributes[name] ||
+      newAttributes[name] !== oldAttributes[name]
+    ) {
+      setAttribute(target, name, newAttributes[name]);
+    }
+  });
+}
+
+function setAttribute(target, name, value) {
+  if (/^on/.test(name) || name === 'forceUpdate') {
+    return;
+  } else if (name === 'className') {
+    target.setAttribute('class', value);
+  } else {
+    target.setAttribute(name, value);
+  }
+}
+
+function removeAttribute(target, name, value) {
+  if (/^on/.test(name) || name === 'forceUpdate') {
+    return;
+  } else if (name === 'className') {
+    target.removeAttribute('class');
+  } else {
+    target.removeAttribute(name);
   }
 }
 
