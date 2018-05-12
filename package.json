@@ -11,28 +11,28 @@
     "build": "rollup -c",
     "dev": "rollup -c -w",
     "test": "jest",
-    "release":
-      "npm t && git commit -am $npm_package_version && git tag $npm_package_version && git push && git push --tags && npm publish",
+    "release": "npm t && git commit -am $npm_package_version && git tag $npm_package_version && git push && git push --tags && npm publish",
     "prepublish": "npm run build",
     "precommit": "lint-staged",
-    "lint":
-      "eslint --ignore-path .gitignore --ignore-path .prettierignore \"src/*.{js,jsx}\"",
+    "lint": "eslint --ignore-path .gitignore --ignore-path .prettierignore \"src/*.{js,jsx}\"",
     "lint:fix": "npm run lint --fix"
   },
   "lint-staged": {
-    "*.{js}": ["eslint --fix", "git add"],
-    "*.{json,md,scss}": ["prettier --write", "git add"]
+    "*.{js}": [
+      "eslint --fix",
+      "git add"
+    ]
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-plugin-transform-react-jsx": "^6.24.1",
     "babel-preset-env": "^1.6.1",
-    "jest": "^22.4.3",
     "eslint": "4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-config-prettier": "2.9.0",
     "eslint-plugin-import": "^2.11.0",
     "eslint-plugin-prettier": "2.6.0",
+    "jest": "^22.4.3",
     "prettier": "1.12.1",
     "rollup": "^0.50.0",
     "rollup-plugin-babel": "^3.0.3",
