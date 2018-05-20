@@ -1,8 +1,10 @@
-export function createElement(vnode) {
+export function createElement(vnode, isSvg) {
   let node =
     typeof vnode === 'string' || typeof vnode === 'number'
       ? document.createTextNode(vnode)
-      : document.createElement(vnode.nodeName);
+      : (isSvg = isSvg || vnode.nodeName === 'svg')
+        ? document.createElementNS('http://www.w3.org/2000/svg', vnode.nodeName)
+        : document.createElement(vnode.nodeName);
 
   if (vnode.attributes) {
     if ((vnode.attributes.hook || {}).mount) vnode.attributes.hook.mount(node);
@@ -21,7 +23,7 @@ export function createElement(vnode) {
     }
 
     for (let i = 0; i < vnode.children.length; i++)
-      node.appendChild(createElement(vnode.children[i]));
+      node.appendChild(createElement(vnode.children[i], isSvg));
   }
 
   return node;

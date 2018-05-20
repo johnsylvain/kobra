@@ -1,11 +1,13 @@
 import { diff } from './diff';
+import { patch } from './patch';
 import { extend } from './util';
 
 let tree = null;
 
 export function render(newNode, parent) {
   newNode = createVDOM(newNode);
-  diff(parent, newNode, tree);
+  const patches = diff(newNode, tree);
+  patch(parent, patches);
   tree = newNode;
 }
 

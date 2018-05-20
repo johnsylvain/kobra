@@ -73,17 +73,25 @@ const Page = (props, children) => (
       <a href="#/">Home</a>
       <a href="#/about">about</a>
     </nav>
-    <div>
-      {children}
-    </div>
+    <div>{children}</div>
   </div>
-)
+);
 
 app.route('/', (state, dispatch) => (
   <Page>
     <h1>Home</h1>
   </Page>
-))
+));
+```
+
+## Cloning Elements
+
+Use the `cloneElement` function to clone and return a new Kobra component. The result will have new props shallowly merged in.
+
+```js
+import { cloneElement } from 'kobra';
+
+cloneElement(element, [props], [...children]);
 ```
 
 ## Asynchronous actions

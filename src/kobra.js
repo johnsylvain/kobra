@@ -46,11 +46,11 @@ export class Kobra {
   }
 
   mount(parent) {
-    this.container = parent;
     const events = [
       'load',
       this.opts.router === 'history' ? 'popstate' : 'hashchange'
     ];
+    this.container = parent;
     events.forEach(event => {
       window.addEventListener(event, this.render.bind(this));
     });
