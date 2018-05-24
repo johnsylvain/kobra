@@ -1,15 +1,13 @@
-# Kobra
+# Kobra ![API Stability](https://img.shields.io/badge/stability-experimental-orange.svg)
 
-![API Stability](https://img.shields.io/badge/stability-experimental-orange.svg)
-
-> Minimal frontend framework
+> Minimal JavaScript framework
 
 ## Features
 
 * Efficient Virtual DOM diffing
 * Shared state across routes
 * Redux style actions
-* Simple API (3 methods)
+* Simple API (only 3 methods)
 
 ## Usage
 
@@ -40,6 +38,22 @@ app.use((state = initialState, action) => {
 });
 
 app.mount(document.querySelector('#app'));
+```
+
+## Getting started
+*Install Dependencies*
+```bash
+yarn add kobra
+yarn add babel-preset-env babel-plugin-transform-react-jsx --dev
+```
+
+*Setup `.babelrc`*
+```json
+{
+  "presets": ["env"],
+  "plugins": [["transform-react-jsx", { "pragma": "h" }]]
+}
+
 ```
 
 ## Methods
@@ -73,12 +87,15 @@ const Page = (props, children) => (
       <a href="#/">Home</a>
       <a href="#/about">about</a>
     </nav>
-    <div>{children}</div>
+    <div>
+      <h1>{props.title}</h1>
+      {children}
+    </div>
   </div>
 );
 
 app.route('/', (state, dispatch) => (
-  <Page>
+  <Page title="Home">
     <h1>Home</h1>
   </Page>
 ));
@@ -114,9 +131,13 @@ const asyncChange = dispatch => {
 
 Lifecycle hooks can be attacted to any DOM node. All hooks are placed inside the `hook` attribute.
 
-Available hooks:
+| Lifecycle Name | When it gets called            |
+|----------------|--------------------------------|
+| `mount`        | when the node is being created |
 
-* `mount`: gets called when the node is being created.
+```js
+<div hook={{ mount: () => console.log('mounted')}}></div>
+```
 
 ## Routing
 
