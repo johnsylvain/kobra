@@ -70,7 +70,7 @@ yarn add babel-preset-env babel-plugin-transform-react-jsx --dev
 >
 > The `action` requires the property `type`. A `payload` may be also be defined.
 >
-> **Note:** The `use` method is optional if you do not need state or actions in your application.
+> **Note:** The `use` method is optional if you do not need state or actions in your application. You may also use multiple reducers by calling the `use` method for each new reducer.
 
 ### `mount(selector: DOMNode)`
 

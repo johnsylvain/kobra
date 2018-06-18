@@ -1,13 +1,15 @@
 import { parse, exec, match } from 'matchit';
 import { extend } from './util';
 import { render } from './render';
+import { Router } from './router';
 
 export class Kobra {
-  constructor(opts) {
-    this.opts = opts || {};
+  constructor({ router } = {}) {
     this.container = undefined;
     this.state = undefined;
     this.dispatch = undefined;
+    this.reducers = [];
+    this.router = new Router(router);
 
     this.views = {
       routes: [],
@@ -16,10 +18,7 @@ export class Kobra {
   }
 
   render() {
-    const path =
-      this.opts.router === 'history'
-        ? document.location.pathname
-        : document.location.hash.substring(1) || '/';
+    const { path } = this.router;
     const arr = match(path, this.views.routes);
     const view = this.views.handlers[(arr[0] || {}).old || path];
 
@@ -31,9 +30,15 @@ export class Kobra {
   }
 
   use(reducer) {
-    this.state = extend(this.state || {}, reducer(undefined, {}));
+    this.reducers.push(reducer);
+    this.reducers.forEach(reducer => {
+      if (this.state) extend(this.state, reducer(undefined, {}));
+      else this.state = reducer(undefined, {});
+    });
     this.dispatch = action => {
-      extend(this.state, reducer(this.state, action));
+      this.reducers.forEach(reducer => {
+        extend(this.state, reducer(this.state, action));
+      });
       setTimeout(() => this.render());
     };
     return this;
@@ -46,13 +51,7 @@ export class Kobra {
   }
 
   mount(parent) {
-    const events = [
-      'load',
-      this.opts.router === 'history' ? 'popstate' : 'hashchange'
-    ];
     this.container = parent;
-    events.forEach(event => {
-      window.addEventListener(event, this.render.bind(this));
-    });
+    this.router.listen(this.render.bind(this));
   }
 }
