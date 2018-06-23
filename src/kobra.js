@@ -1,4 +1,3 @@
-import { parse, exec, match } from 'matchit';
 import { extend } from './util';
 import { render } from './render';
 import { Router } from './router';
@@ -10,23 +9,16 @@ export class Kobra {
     this.dispatch = undefined;
     this.reducers = [];
     this.router = new Router(router);
-
-    this.views = {
-      routes: [],
-      handlers: {}
-    };
   }
 
   render() {
-    const { path } = this.router;
-    const arr = match(path, this.views.routes);
-    const view = this.views.handlers[(arr[0] || {}).old || path];
+    const { handler, params } = this.router;
 
-    if (arr.length) {
-      this.state = extend(this.state || {}, { params: exec(path, arr) });
+    if (params) {
+      this.state = extend(this.state || {}, { params });
     }
 
-    render(view(this.state, this.dispatch), this.container);
+    render(handler(this.state, this.dispatch), this.container);
   }
 
   use(reducer) {
@@ -45,8 +37,7 @@ export class Kobra {
   }
 
   route(pattern, handler) {
-    this.views.routes.push(parse(pattern));
-    this.views.handlers[pattern] = handler;
+    this.router.on(pattern, handler);
     return this;
   }
 

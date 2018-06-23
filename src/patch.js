@@ -6,7 +6,7 @@ function setAttribute(node, name, value) {
   else node.setAttribute(name, value);
 }
 
-function removeAttribute(node, name, value) {
+function removeAttribute(node, name) {
   if (name === 'className') node.remove('class');
   else if (name === '__html') node.innerHTML = '';
   else node.removeAttribute(name);
