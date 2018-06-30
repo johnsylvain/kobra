@@ -16,7 +16,7 @@ function createVDOM(vnode) {
     children: (vnode.children || []).map(
       child =>
         typeof child === 'string' || typeof child === 'number'
-          ? child
+          ? child.toString()
           : createVDOM(child)
     )
   });
