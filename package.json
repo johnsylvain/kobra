@@ -1,6 +1,6 @@
 {
   "name": "kobra",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "author": "John Sylvain <john.n.sylvain@gmail.com>",
   "license": "MIT",
   "main": "dist/kobra.cjs.js",
