@@ -1,6 +1,6 @@
 import { extend } from './util';
 import { render } from './render';
-import { Router } from './router';
+import { Router } from './router/router';
 
 export class Kobra {
   constructor({ router } = {}) {
@@ -12,13 +12,13 @@ export class Kobra {
   }
 
   render() {
-    const { handler, params } = this.router;
+    this.router.getCurrent((handler, params) => {
+      if (params) {
+        this.state = extend(this.state || {}, { params });
+      }
 
-    if (params) {
-      this.state = extend(this.state || {}, { params });
-    }
-
-    render(handler(this.state, this.dispatch), this.container);
+      render(handler(this.state, this.dispatch), this.container);
+    });
   }
 
   use(reducer) {

@@ -14,14 +14,11 @@ export class Router {
     }[this.type];
   }
 
-  get handler() {
+  getCurrent(cb) {
     const arr = match(this.path, this.routes);
-    return this.handlers[(arr[0] || {}).old || this.path];
-  }
-
-  get params() {
-    const arr = match(this.path, this.routes);
-    return exec(this.path, arr);
+    const params = exec(this.path, arr);
+    const handler = this.handlers[(arr[0] || {}).old || this.path];
+    cb(handler, params);
   }
 
   on(pattern, handler) {

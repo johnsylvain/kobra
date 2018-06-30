@@ -2,14 +2,14 @@
 
 > Minimal JavaScript framework
 
-## Features
+## 👌 Features
 
 * Efficient Virtual DOM diffing
 * Shared state across routes
 * Redux style actions
 * Simple API (only 3 methods)
 
-## Usage
+## 💻 Usage
 
 ```js
 import { h, Kobra } from 'kobra';
@@ -41,19 +41,21 @@ app.mount(document.querySelector('#app'));
 ```
 
 ## Getting started
-*Install Dependencies*
+
+_Install Dependencies_
+
 ```bash
 yarn add kobra
 yarn add babel-preset-env babel-plugin-transform-react-jsx --dev
 ```
 
-*Setup `.babelrc`*
+_Setup `.babelrc`_
+
 ```json
 {
   "presets": ["env"],
   "plugins": [["transform-react-jsx", { "pragma": "h" }]]
 }
-
 ```
 
 ## Methods
@@ -127,23 +129,53 @@ const asyncChange = dispatch => {
 };
 ```
 
+## Routing
+
+Kobra has support for both hash (default) and browser routing. Define the router type for your app in the `Kobra` constructor.
+
+### Hash routing
+
+```js
+import { Kobra } from 'kobra';
+
+const app = new Kobra({ router: 'hash' });
+```
+
+Hash routing is the easiest to get up and running. You can use anchor tags as you normally would, however it's necessary to include the `#` prefix.
+
+```html
+<a href="#/about">About</a>
+```
+
+### Browser history routing
+
+```js
+import { Kobra, Link } from 'kobra';
+
+const app = new Kobra({ router: 'history' });
+```
+
+When using the browser history router, import the `Link` component. It's important to use the `Link` component instead of anchor tags so that the application can correctly transition between page states.
+
+```js
+<Link to="/about">About</Link>
+```
+
+### Route Params
+
+Route patterns are defined in the first argument in the `route` method. Parameters are denoted with the `:` prefix. Parameter values are passed into the view through the `state.params` object.
+
 ## Lifecycle Hooks
 
 Lifecycle hooks can be attacted to any DOM node. All hooks are placed inside the `hook` attribute.
 
 | Lifecycle Name | When it gets called            |
-|----------------|--------------------------------|
+| -------------- | ------------------------------ |
 | `mount`        | when the node is being created |
 
 ```js
-<div hook={{ mount: () => console.log('mounted')}}></div>
+<div hook={{ mount: () => console.log('mounted') }} />
 ```
-
-## Routing
-
-**Note:** Kobra currently uses a hash router.
-
-Route patterns are defined in the first argument in the `route` method. Parameters are denoted with the `:` prefix. Parameter values are passed into the view through the `state.params` object.
 
 ## Development
 
