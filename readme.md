@@ -1,4 +1,7 @@
-# Kobra ![API Stability](https://img.shields.io/badge/stability-experimental-orange.svg)
+# Kobra
+
+![API Stability](https://img.shields.io/badge/stability-experimental-orange.svg)
+![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/kobra.svg)
 
 > Minimal JavaScript framework
 
