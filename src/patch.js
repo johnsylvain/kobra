@@ -7,7 +7,7 @@ function setAttribute(node, name, value) {
 }
 
 function removeAttribute(node, name) {
-  if (name === 'className') node.remove('class');
+  if (name === 'className') node.removeAttribute('class');
   else if (name === '__html') node.innerHTML = '';
   else node.removeAttribute(name);
 }
