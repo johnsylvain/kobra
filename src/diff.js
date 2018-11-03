@@ -12,11 +12,18 @@ function diffChildren(newNode, oldNode) {
 
 function diffAttributes(newNode, oldNode) {
   const patches = [];
-
   const attributes = Object.assign({}, newNode.attributes, oldNode.attributes);
+
   Object.keys(attributes).forEach(name => {
     const newVal = newNode.attributes[name];
     const oldVal = oldNode.attributes[name];
+
+    if (typeof newVal === 'function' || typeof oldVal === 'function') {
+      patches.push(
+        { type: 'REMOVE_ATTRIBUTE', name, value: oldVal },
+        { type: 'SET_ATTRIBUTE', name, value: newVal }
+      );
+    }
 
     if (!newVal)
       patches.push({ type: 'REMOVE_ATTRIBUTE', name, value: oldVal });

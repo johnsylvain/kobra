@@ -1,3 +1,5 @@
+import { isEvent } from './util';
+
 export function createElement(vnode, isSvg) {
   let node =
     typeof vnode === 'string' || typeof vnode === 'number'
@@ -7,18 +9,22 @@ export function createElement(vnode, isSvg) {
         : document.createElement(vnode.nodeName);
 
   if (vnode.attributes) {
-    if ((vnode.attributes.hook || {}).mount) vnode.attributes.hook.mount(node);
+    if ((vnode.attributes.hook || {}).mount) {
+      vnode.attributes.hook.mount(node);
+    }
 
     for (let name in vnode.attributes) {
-      if (/^on/.test(name)) {
+      if (isEvent(name)) {
         node.addEventListener(
           name.slice(2).toLowerCase(),
           vnode.attributes[name]
         );
       } else {
-        if (name === 'className')
+        if (name === 'className') {
           node.setAttribute('class', vnode.attributes[name]);
-        else node.setAttribute(name, vnode.attributes[name]);
+        } else {
+          node.setAttribute(name, vnode.attributes[name]);
+        }
       }
     }
 
