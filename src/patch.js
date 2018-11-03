@@ -1,9 +1,14 @@
 import { createElement } from './create-element';
+import { isEvent } from './util';
 
 function setAttribute(node, name, value) {
-  if (name === 'className') node.setAttribute('class', value);
-  else if (name === '__html') node.innerHTML = value;
-  else node.setAttribute(name, value);
+  if (isEvent(name)) {
+    return;
+  } else {
+    if (name === 'className') node.setAttribute('class', value);
+    else if (name === '__html') node.innerHTML = value;
+    else node.setAttribute(name, value);
+  }
 }
 
 function removeAttribute(node, name) {

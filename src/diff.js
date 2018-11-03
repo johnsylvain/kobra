@@ -43,6 +43,7 @@ function changed(node1, node2) {
   return (
     typeof node1 !== typeof node2 ||
     (typeof node1 === 'string' && node1 !== node2) ||
-    node1.nodeName !== node2.nodeName
+    node1.nodeName !== node2.nodeName ||
+    (node1.attributes && node1.attributes.forceUpdate)
   );
 }
