@@ -12,11 +12,18 @@ function diffChildren(newNode, oldNode) {
 
 function diffAttributes(newNode, oldNode) {
   const patches = [];
-
   const attributes = Object.assign({}, newNode.attributes, oldNode.attributes);
+
   Object.keys(attributes).forEach(name => {
     const newVal = newNode.attributes[name];
     const oldVal = oldNode.attributes[name];
+
+    if (typeof newVal === 'function' || typeof oldVal === 'function') {
+      patches.push(
+        { type: 'REMOVE_ATTRIBUTE', name, value: oldVal },
+        { type: 'SET_ATTRIBUTE', name, value: newVal }
+      );
+    }
 
     if (!newVal)
       patches.push({ type: 'REMOVE_ATTRIBUTE', name, value: oldVal });
@@ -43,7 +50,6 @@ function changed(node1, node2) {
   return (
     typeof node1 !== typeof node2 ||
     (typeof node1 === 'string' && node1 !== node2) ||
-    node1.nodeName !== node2.nodeName ||
-    (node1.attributes && node1.attributes.forceUpdate)
+    node1.nodeName !== node2.nodeName
   );
 }

@@ -2,17 +2,16 @@ import { createElement } from './create-element';
 import { isEvent } from './util';
 
 function setAttribute(node, name, value) {
-  if (isEvent(name)) {
-    return;
-  } else {
-    if (name === 'className') node.setAttribute('class', value);
-    else if (name === '__html') node.innerHTML = value;
-    else node.setAttribute(name, value);
-  }
+  if (isEvent(name)) node.addEventListener(name.slice(2).toLowerCase(), value);
+  else if (name === 'className') node.setAttribute('class', value);
+  else if (name === '__html') node.innerHTML = value;
+  else node.setAttribute(name, value);
 }
 
-function removeAttribute(node, name) {
-  if (name === 'className') node.removeAttribute('class');
+function removeAttribute(node, name, value) {
+  if (isEvent(name))
+    node.removeEventListener(name.slice(2).toLowerCase(), value);
+  else if (name === 'className') node.removeAttribute('class');
   else if (name === '__html') node.innerHTML = '';
   else node.removeAttribute(name);
 }
