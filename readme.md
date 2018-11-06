@@ -6,6 +6,8 @@
 
 > Minimal JavaScript framework
 
+⚠️ **Do not use in production. Still under active development.**
+
 ## 👌 Features
 
 * Efficient Virtual DOM diffing
