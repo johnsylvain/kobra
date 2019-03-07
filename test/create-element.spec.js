@@ -17,11 +17,18 @@ describe('[jsx] create-element', () => {
 
   it('attaches event listeners', () => {});
 
-  it('attaches attributes', () => {});
+  it('attaches attributes', () => {
+    const node = h('div', { id: 'foo' });
+    const el = createElement(node);
+
+    expect(el.id).toBe('foo');
+  });
 
   it('attaches className as class', () => {
     const node = h('div', { className: 'foo' });
     const el = createElement(node);
+
+    expect(el.classList.contains('foo')).toBeTruthy();
   });
 
   it('calls mount lifecycle hook', () => {

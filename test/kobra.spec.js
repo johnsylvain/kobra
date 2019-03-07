@@ -1,5 +1,4 @@
 import { Kobra } from '../src/kobra';
-import { extend } from '../src/util';
 
 describe('[api] Kobra', function() {
   let spy;
@@ -48,8 +47,8 @@ describe('[api] Kobra', function() {
     expect(this.app.state).toHaveProperty('test', 'test');
   });
 
-  xit('schedules a render when an action is dispatched', () => {
-    spy = jest.spyOn(this.app, 'render');
+  it('schedules a render when an action is dispatched', () => {
+    spy = jest.spyOn(Kobra.prototype, 'render');
     const reducer = (state = {}, action) => {
       switch (action.type) {
         case 'TEST':
@@ -62,6 +61,8 @@ describe('[api] Kobra', function() {
     this.app.use(reducer);
     this.app.dispatch({ type: 'TEST' });
 
-    expect(spy).toHaveBeenCalled();
+    setTimeout(() => {
+      expect(spy).toHaveBeenCalled();
+    });
   });
 });

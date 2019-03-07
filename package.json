@@ -1,6 +1,6 @@
 {
   "name": "kobra",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "John Sylvain <john.n.sylvain@gmail.com>",
   "license": "MIT",
   "main": "dist/kobra.cjs.js",
@@ -11,6 +11,7 @@
     "build": "rollup -c",
     "dev": "rollup -c -w",
     "test": "jest",
+    "test:watch": "jest --watch",
     "release": "npm t && git commit -am $npm_package_version && git tag $npm_package_version && git push && git push --tags && npm publish",
     "prepublishOnly": "npm run build",
     "precommit": "lint-staged",

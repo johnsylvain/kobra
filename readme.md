@@ -12,7 +12,7 @@
 
 * Efficient Virtual DOM diffing
 * Shared state across routes
-* Redux style actions
+* Redux style state management
 * Simple API (only 3 methods)
 
 ## 💻 Usage
