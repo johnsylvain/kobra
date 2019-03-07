@@ -1,5 +1,4 @@
 export function h(nodeName, attributes) {
-  let rest = [];
   let length = arguments.length;
   let children = [];
 
