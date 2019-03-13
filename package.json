@@ -3,6 +3,7 @@
   "version": "0.1.1",
   "author": "John Sylvain <john.n.sylvain@gmail.com>",
   "license": "MIT",
+  "description": "Minimal JavaScript Framework",
   "main": "dist/kobra.cjs.js",
   "module": "dist/kobra.esm.js",
   "browser": "dist/kobra.umd.js",
