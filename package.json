@@ -1,6 +1,6 @@
 {
   "name": "kobra",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "author": "John Sylvain <john.n.sylvain@gmail.com>",
   "license": "MIT",
   "description": "Minimal JavaScript Framework",
@@ -42,5 +42,14 @@
   },
   "dependencies": {
     "matchit": "^1.0.7"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johnsylvain/kobra.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/johnsylvain/kobra/issues"
+  },
+  "homepage": "https://github.com/johnsylvain/kobra#readme"
 }
