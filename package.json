@@ -26,7 +26,6 @@
     ]
   },
   "devDependencies": {
-    "@babel/core": "7.0.0-0",
     "@babel/plugin-transform-react-jsx": "^7.3.0",
     "@babel/preset-env": "^7.3.4",
     "babel-eslint": "^10.0.1",
@@ -41,6 +40,7 @@
     "rollup-plugin-node-resolve": "^4.0.1"
   },
   "dependencies": {
+    "babel-core": "^6.26.3",
     "matchit": "^1.0.7"
   }
 }
