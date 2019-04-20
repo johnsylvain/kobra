@@ -6,6 +6,16 @@ const handleClick = to => event => {
   window.dispatchEvent(new PopStateEvent('popstate'));
 };
 
-export const Link = ({ to, className }, children) => {
-  return h('a', { href: to, className, onClick: handleClick(to) }, children);
+export const Link = ({ to, className, activeClass }, children) => {
+  return h(
+    'a',
+    {
+      href: to,
+      className: [className, window.location.pathname === to && activeClass]
+        .filter(Boolean)
+        .join(' '),
+      onClick: handleClick(to)
+    },
+    children
+  );
 };
