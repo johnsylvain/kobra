@@ -5,7 +5,7 @@ function setAttribute(node, name, value) {
   if (isEvent(name)) node.addEventListener(name.slice(2).toLowerCase(), value);
   else if (name === 'className') node.setAttribute('class', value);
   else if (name === '__html') node.innerHTML = value;
-  else node.setAttribute(name, value);
+  else if (name !== 'hook') node.setAttribute(name, value);
 }
 
 function removeAttribute(node, name, value) {

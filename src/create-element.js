@@ -22,7 +22,7 @@ export function createElement(vnode, isSvg) {
       } else {
         if (name === 'className') {
           node.setAttribute('class', vnode.attributes[name]);
-        } else {
+        } else if (name !== 'hook') {
           node.setAttribute(name, vnode.attributes[name]);
         }
       }
