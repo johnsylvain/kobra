@@ -5,7 +5,7 @@ function setAttribute(node, name, value) {
   if (isEvent(name)) node.addEventListener(name.slice(2).toLowerCase(), value);
   else if (name === 'className') node.setAttribute('class', value);
   else if (name === '__html') node.innerHTML = value;
-  else node.setAttribute(name, value);
+  else if (name !== 'hook') node.setAttribute(name, value);
 }
 
 function removeAttribute(node, name, value) {
@@ -46,6 +46,13 @@ export function patch(parent, patches, index = 0) {
     }
     case 'UPDATE': {
       const { children, attributes } = patches;
+
+      attributes.forEach(attribute => {
+        if (attribute.name === 'hook' && attribute.value.update) {
+          attribute.value.update(el)
+        };
+      })
+
       patchAttributes(el, attributes);
       for (let i = 0; i < children.length; i++) {
         patch(el, children[i], i);
