@@ -49,9 +49,9 @@ export function patch(parent, patches, index = 0) {
 
       attributes.forEach(attribute => {
         if (attribute.name === 'hook' && attribute.value.update) {
-          attribute.value.update(el)
-        };
-      })
+          attribute.value.update(el);
+        }
+      });
 
       patchAttributes(el, attributes);
       for (let i = 0; i < children.length; i++) {
