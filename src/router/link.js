@@ -1,9 +1,13 @@
 import { h } from '../h';
 
-const handleClick = to => event => {
-  event.preventDefault();
+export const route = to => {
   window.history.pushState(undefined, undefined, to);
   window.dispatchEvent(new PopStateEvent('popstate'));
+};
+
+const handleClick = to => event => {
+  event.preventDefault();
+  route(to);
 };
 
 export const Link = ({ to, className, activeClass }, children) => {

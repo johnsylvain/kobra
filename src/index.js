@@ -1,11 +1,7 @@
 import { h } from './h';
 import { Kobra } from './kobra';
 import { cloneElement } from './clone-element';
-import { Link } from './router/link';
+import { Link, route } from './router/link';
 
-export default {
-  h,
-  cloneElement,
-  Kobra,
-  Link
-};
+export { h, cloneElement, Kobra, Link, route };
+export default { h, cloneElement, Kobra, Link, route };
