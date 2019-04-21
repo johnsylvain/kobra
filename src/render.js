@@ -13,12 +13,13 @@ export function render(newNode, parent) {
 
 function createVDOM(vnode) {
   const newVNode = extend(extend({}, vnode), {
-    children: (vnode.children || []).map(
-      child =>
+    children: (vnode.children || [])
+      .filter(Boolean)
+      .map(child =>
         typeof child === 'string' || typeof child === 'number'
           ? child.toString()
           : createVDOM(child)
-    )
+      )
   });
 
   return typeof vnode.nodeName === 'function'
