@@ -1,3 +1,12 @@
+import {
+  CREATE,
+  UPDATE,
+  REPLACE,
+  REMOVE,
+  SET_ATTRIBUTE,
+  REMOVE_ATTRIBUTE
+} from './constants';
+
 function diffChildren(newNode, oldNode) {
   const patches = [];
   const patchesLength = Math.max(
@@ -20,27 +29,26 @@ function diffAttributes(newNode, oldNode) {
 
     if (typeof newVal === 'function' || typeof oldVal === 'function') {
       patches.push(
-        { type: 'REMOVE_ATTRIBUTE', name, value: oldVal },
-        { type: 'SET_ATTRIBUTE', name, value: newVal }
+        { type: REMOVE_ATTRIBUTE, name, value: oldVal },
+        { type: SET_ATTRIBUTE, name, value: newVal }
       );
     }
 
-    if (!newVal)
-      patches.push({ type: 'REMOVE_ATTRIBUTE', name, value: oldVal });
+    if (!newVal) patches.push({ type: REMOVE_ATTRIBUTE, name, value: oldVal });
     else if (!oldVal || oldVal !== newVal)
-      patches.push({ type: 'SET_ATTRIBUTE', name, value: newVal });
+      patches.push({ type: SET_ATTRIBUTE, name, value: newVal });
   });
 
   return patches;
 }
 
 export function diff(newNode, oldNode) {
-  if (!oldNode) return { type: 'CREATE', newNode };
-  if (!newNode) return { type: 'REMOVE' };
-  if (changed(newNode, oldNode)) return { type: 'REPLACE', newNode };
+  if (!oldNode) return { type: CREATE, newNode };
+  if (!newNode) return { type: REMOVE };
+  if (changed(newNode, oldNode)) return { type: REPLACE, newNode };
   if (newNode.nodeName)
     return {
-      type: 'UPDATE',
+      type: UPDATE,
       children: diffChildren(newNode, oldNode),
       attributes: diffAttributes(newNode, oldNode)
     };
