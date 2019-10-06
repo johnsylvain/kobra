@@ -65,4 +65,12 @@ describe('[api] Kobra', function() {
       expect(spy).toHaveBeenCalled();
     });
   });
+
+  it('calls the run handler on mount', () => {
+    spy = jest.fn();
+    this.app.run(spy);
+    this.app.mount({});
+
+    expect(spy).toHaveBeenCalled();
+  });
 });

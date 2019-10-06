@@ -13,7 +13,7 @@
 * Efficient Virtual DOM diffing
 * Shared state across routes
 * Redux style state management
-* Simple API (only 3 methods)
+* Simple API (4 methods)
 
 ## 💻 Usage
 
@@ -80,6 +80,12 @@ _Setup `.babelrc`_
 >
 > **Note:** The `use` method is optional if you do not need state or actions in your application. You may also use multiple reducers by calling the `use` method for each new reducer.
 
+### `run(handler: Function)`
+
+> Execute a block of code when the application is mounted. The `handler` receives one argument which is the `dipatch` function for dispatching state updates.
+
+> This method is particularly useful for loading asynchronous data that is needed on all routes.
+
 ### `mount(selector: DOMNode)`
 
 > Mount the application and start listening to route changes
@@ -133,6 +139,34 @@ const asyncChange = dispatch => {
     dispatch({ type: 'UPDATE_TEXT', payload: { text: 'Loaded' } });
   }, 1000);
 };
+```
+
+### Loading data asynchronously on app startup
+
+```js
+const app = new Kobra();
+
+app.use((state = {}, action) => {
+  switch (action.type) {
+    case '@@INIT':
+      return { ...state, items: action.payload };
+    default:
+      return state;
+  }
+});
+
+app.run(dispatch => {
+  fetch('/api')
+    .then(res => res.json())
+    .then(json => {
+      dispatch({
+        type: '@@INIT',
+        payload: json.data.items
+      });
+    });
+});
+
+app.mount(document.querySelector('#app'));
 ```
 
 ## Routing
