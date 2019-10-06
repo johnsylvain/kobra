@@ -8,6 +8,7 @@ export class Kobra {
     this.state = undefined;
     this.dispatch = undefined;
     this.reducers = [];
+    this.runHandlers = [];
     this.router = new Router(router);
   }
 
@@ -41,8 +42,18 @@ export class Kobra {
     return this;
   }
 
+  run(fn) {
+    this.runHandlers.push(fn);
+  }
+
   mount(parent) {
     this.container = parent;
     this.router.listen(this.render.bind(this));
+
+    if (this.runHandlers.length) {
+      this.runHandlers.forEach(handler => {
+        handler(this.dispatch);
+      });
+    }
   }
 }
