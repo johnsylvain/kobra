@@ -4,13 +4,18 @@ Kobra is a minimal JavaScript framework. It includes Redux style state managemen
 
 Kobra is inspired by the ELM architecture.
 
-## Features {docsify-ignore}
+## Features
 
-* Efficient Virtual DOM diffing
-* Shared state across routes
-* Redux style state management
-* Simple API (4 methods)
+- Efficient Virtual DOM diffing
+- Shared state across routes
+- Redux style state management
+- Simple API (4 methods)
 
-## License {docsify-ignore}
+## Quick links
+
+- [GitHub](https://github.com/johnsylvain/kobra)
+- [NPM](https://npmjs.org/package/kobra)
+
+## License
 
 [MIT](https://github.com/johnsylvain/kobra/blob/master/license)

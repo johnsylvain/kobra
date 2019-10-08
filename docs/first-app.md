@@ -77,7 +77,7 @@ app.route('/', () => {
 
 ## Adding state
 
-Kobra uses the reducer pattern to manage state. Here we'll create a simple counter;
+Kobra uses the reducer pattern to manage state. Here we'll create a simple counter.
 
 ```js
 import { Kobra, h } from 'kobra';

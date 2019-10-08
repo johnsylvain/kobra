@@ -41,12 +41,12 @@
     }
 
     .logo div:nth-child(1) {
-      top: 20px;
+      top: 25px;
       animation-delay: 300ms;
     }
 
     .logo div:nth-child(2) {
-      top: 40px;
+      top: 50px;
       animation-delay: 600ms;
     }
 
@@ -74,13 +74,7 @@
       logo: './_resources/kobra.svg',
       subMaxLevel: 4,
       search: {
-        maxAge: 86400000,
-        paths: [
-          '/getting-started'
-        ],
-        placeholder: 'Type to search',
-        noData: 'No Results!',
-        depth: 3,
+        paths: 'auto',
         hideOtherSidebarContent: true,
       },
       loadSidebar: true
