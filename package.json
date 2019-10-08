@@ -17,7 +17,8 @@
     "prepublishOnly": "npm run build",
     "precommit": "lint-staged",
     "lint": "eslint --ignore-path .gitignore --ignore-path .prettierignore \"src/*.{js,jsx}\"",
-    "lint:fix": "npm run lint --fix"
+    "lint:fix": "npm run lint --fix",
+    "docs": "docsify serve docs"
   },
   "lint-staged": {
     "*.{js}": [
@@ -30,6 +31,7 @@
     "@babel/preset-env": "^7.3.4",
     "babel-core": "^6.26.3",
     "babel-eslint": "^10.0.1",
+    "docsify-cli": "^4.3.0",
     "eslint": "5.15.1",
     "eslint-config-prettier": "4.1.0",
     "eslint-plugin-prettier": "3.0.1",
