@@ -13,9 +13,14 @@
 - Redux style state management
 - Simple API (4 methods)
 
-# Quick links
+## 🌎 Quick links
 - [Documentation](https://kobra.js.org)
 - [NPM](https://npmjs.org/package/kobra)
+
+## 🎉 Example apps
+
+- **Todo app:** ([Demo](https://todos.sylvain.win)) ([Source](https://github.com/johnsylvain/sylvain.win/tree/master/todos))
+- **Music artist discography:** ([Demo](https://music.sylvain.win)) ([Source](https://github.com/johnsylvain/sylvain.win/tree/master/music))
 
 ## 💻 Development
 
