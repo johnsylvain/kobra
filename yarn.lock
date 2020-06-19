@@ -4838,6 +4838,11 @@ stack-utils@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/stack-utils/-/stack-utils-1.0.2.tgz#33eba3897788558bebfc2db059dc158ec36cebb8"
 
+staten@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/staten/-/staten-0.1.0.tgz#1de5db4507bc552a3f88a99338a55fda56b6e719"
+  integrity sha512-6V+VDt7tuBP3IcZYNYidKR9jWu3q1PvmgAj7XJWMJD75LbQLiV8vmh8MnDXdOlKKDTQvFVYDhKSCbJZKFaHp3w==
+
 static-extend@^0.1.1:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/static-extend/-/static-extend-0.1.2.tgz#60809c39cbff55337226fd5e0b520f341f1fb5c6"

@@ -14,8 +14,6 @@ cloneElement(element, [props], [...children]);
 
 Use the `route` function to programmatically change the route.
 
-**Note:** this will only work when [browser routing](broswer-routing.md) is enabled.
-
 ```js
 import { route } from 'kobra';
 

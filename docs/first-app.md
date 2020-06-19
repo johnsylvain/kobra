@@ -3,7 +3,25 @@
 The easiest way to get started is with [Parcel](https://parceljs.org).
 
 ```bash
-yarn add parcel-bundler --dev
+# Dependencies
+yarn add kobra
+
+# Dev dependencies
+yarn add parcel-bundler @babel/core @babel/preset-env @babel-transform-react-jsx @babel/plugin-transform-runtime --dev
+```
+
+**.babelrc**
+
+```json
+{
+  "presets": [
+    "@babel/preset-env"
+  ],
+  "plugins": [
+    ["@babel/transform-react-jsx", { "pragma": "h" }],
+    "@babel/plugin-transform-runtime"
+  ]
+}
 ```
 
 Our project structure:
@@ -35,7 +53,7 @@ Our `package.json`
     "parcel-bundler": "^1.12.3",
   },
   "dependencies": {
-    "kobra": "^0.2.2"
+    "kobra": "^0.3.0"
   }
 }
 ```
@@ -52,9 +70,9 @@ First, let's create an `index.html` file. Here we need to specify a target for o
 Next we need to initialize our application in our JavaScript.
 
 ```js
-import { Kobra } from 'kobra';
+import { kobra } from 'kobra';
 
-const app = new Kobra();
+const app = kobra();
 ```
 
 ## Adding a route
@@ -62,9 +80,9 @@ const app = new Kobra();
 Next we need to specify a route and a view to render on that route. Make sure to import the `h` function. This is necessary for the JSX to be called correctly.
 
 ```js
-import { Kobra, h } from 'kobra';
+import { kobra, h } from 'kobra';
 
-const app = new Kobra();
+const app = kobra();
 
 app.route('/', () => {
   return (
@@ -77,31 +95,24 @@ app.route('/', () => {
 
 ## Adding state
 
-Kobra uses the reducer pattern to manage state. Here we'll create a simple counter.
+Kobra uses actions to update state. Actions are defined as object methods that return the parts of the state you want to update. Here we'll create a simple counter.
 
 ```js
-import { Kobra, h } from 'kobra';
+import { kobra, h } from 'kobra';
 
-const app = new Kobra();
+const app = kobra();
 
 const initialState = { counter: 0 };
 
-const reducer = (state = initialState, action) => {
-  switch (action.type) {
-    case 'INCREMENT':
-      return { ...state, counter: state.counter + 1 };
-    default:
-      return state;
-  }
+const actions = {
+  increment: () => state => ({ counter: state.counter + 1 })
 }
 
-app.use(reducer);
+app.setStore(actions, initialState);
 
-app.route('/', (state, dispatch) => {
+app.route('/', (state, actions) => {
   return (
-    <button onClick={() => {
-      dispatch({ type: 'INCREMENT' })
-    }}>
+    <button onClick={actions.increment}>
       {state.counter}
     </button>
   );
@@ -113,28 +124,21 @@ app.route('/', (state, dispatch) => {
 Finally we need to mount our app to the DOM. This is accomplished with the `mount` method.
 
 ```js
-import { Kobra, h } from 'kobra';
+import { kobra, h } from 'kobra';
 
-const app = new Kobra();
+const app = kobra();
 
 const initialState = { counter: 0 };
 
-const reducer = (state = initialState, action) => {
-  switch (action.type) {
-    case 'INCREMENT':
-      return { ...state, counter: state.counter + 1 };
-    default:
-      return state;
-  }
+const actions = {
+  increment: () => state => ({ counter: state.counter + 1 })
 }
 
-app.use(reducer);
+app.setStore(actions, initialState);
 
-app.route('/', (state, dispatch) => {
+app.route('/', (state, actions) => {
   return (
-    <button onClick={() => {
-      dispatch({ type: 'INCREMENT' })
-    }}>
+    <button onClick={actions.increment}>
       {state.counter}
     </button>
   );
@@ -144,5 +148,3 @@ app.mount(document.querySelector('#root'));
 ```
 
 That's it! You've created your first Kobra app. Try changing the path from `'/'` to something else.
-
-Note that the default behavior of the route is to use a hash (`#`). If you specify `/about` in the route method, the view can be accessed at `/#/about`. We'll learn about history based routing in another section.

@@ -1,15 +1,20 @@
 # Asynchronous updates
 
-Asynchronous actions are accomplished by dispatching the action from within callback or promise of an async function.
+Asynchronous updates are accomplished by defining two actions.
 
 ```js
-const view = (state, dispatch) => (
-  <h1 onClick={() => asyncChange(dispatch)}>{state.text || 'Loading...'}</h1>
-);
+const actions = {
+  setUser: user => ({ user }),
+  getUser: id => (state, actions) => {
+    fetch(`api/users/${id}`)
+      .then(blob => blob.json())
+      .then(json => actions.setUser(json.data.user))
+  }
+}
 
-const asyncChange = dispatch => {
-  setTimeout(() => {
-    dispatch({ type: 'UPDATE_TEXT', payload: { text: 'Loaded' } });
-  }, 1000);
-};
+const view = (state, actions) => (
+  <button onClick={() => actions.getUser(state.params.id)}>
+    Load User
+  </button>
+);
 ```

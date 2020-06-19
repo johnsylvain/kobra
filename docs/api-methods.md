@@ -14,57 +14,42 @@ app.route('/about', () => <About />);
 app.route('/item/:id', state => <Item id={state.params.id} />);
 ```
 
-## app.use
+## app.setStore
 
-`use(reducer: Function)`
+`setStore(actions: object, initialState: object)`
 
-> The reducer initializes the state and defines how the actions create the next state. The reducer function receives `state` and `action` as the first two arguments.
->
-> The `action` requires the property `type`. A `payload` may be also be defined.
->
-> **Note:** The `use` method is optional if you do not need state or actions in your application. You may also use multiple reducers by calling the `use` method for each new reducer.
+> `actions` is an object that contains all actions for an application. An action is a function that returns a partial copy of the state that needs to be updated.
 
 ```js
 const initialState = { count: 0 };
+const actions = {
+  increment: () => state => ({ count: state.count + 1 }),
+  decrement: () => state => ({ count: state.count - 1 }),
+  set: value => ({ count: value })
+}
 
-app.use((state = initialState, action) => {
-  switch (action.type) {
-    case 'INCREMENT':
-      return { ...state, count: state.count + 1 };
-    case 'DECREMENT':
-      return { ...state, count: state.count - 1 };
-    default:
-      return state;
-  }
-});
+app.setStore(actions, intiailState);
 ```
 
 ## app.run
 
 `run(handler: Function)`
 
-> Execute a block of code when the application is mounted. The `handler` receives one argument which is the `dipatch` function for dispatching state updates.
+> Execute a block of code when the application is mounted. The `handler` receives one argument which is an object of all actions that can be used for triggering state updates.
 >
 > This method is particularly useful for loading asynchronous data that is needed on all routes.
 
 ```js
-app.use((state = {}, action) => {
-  switch (action.type) {
-    case '@@INIT':
-      return { ...state, items: action.payload };
-    default:
-      return state;
-  }
-});
+app.setStore(
+  { init: items => ({ items })},
+  { items: [] }
+);
 
-app.run(dispatch => {
+app.run(actions => {
   fetch('/api')
     .then(res => res.json())
     .then(json => {
-      dispatch({
-        type: '@@INIT',
-        payload: json.data.items
-      });
+      actions.init(json.data.items)
     });
 });
 ```

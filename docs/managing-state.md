@@ -1,22 +1,35 @@
 # Managing state
 
-Kobra uses a Redux style system for state management.
+Kobra uses [Staten](https://github.com/johnsylvain/staten) for state management.
 
-## Reducers
+## Actions
 
-A reducer is a function that accepts an `action` and the current `state`. It then determines how to update the state based on the action type, then returns a brand new state. The current `state` should not be mutated in the reducer function.
-
-The reducer function takes two arguments, `state` and `action`. `state` should be set to the initial state of the application and the reducer should always have a default case of returning the current state.
-
-It's common practice to use a switch statement to determine how to update the state, based on the action type.
+Actions are how state is updated in Kobra. An action is a function that returns a copy of the updated state. Notice how we only have to return the properties we want to update in the new state object.
 
 ```js
-const reducer = (state = {}, action) => {
-  switch (action.type) {
-    case 'SET_NAME':
-      return { ...state, name: action.payload };
-    default:
-      return state;
+const initialState = {
+  count: 0,
+  name: 'John'
+};
+
+const actions = {
+  setName: name => {
+    return { name };
+  }
+}
+```
+
+Some actions need access to the current state. For this we add another function that takes state as an argument.
+
+```js
+const initialState = {
+  count: 0,
+  name: 'John'
+};
+
+const actions = {
+  increment: () => (state) => {
+    return { count: state.count + 1 };
   }
 }
 ```
@@ -26,12 +39,9 @@ const reducer = (state = {}, action) => {
 Actions are dispatched from within the route views. The `dispatch` function accepts one argument, which is the action to be dispatched. The action should include a `type` and an optional `payload`.
 
 ```js
-app.route('/', (state, dispatch) => {
+app.route('/', (state, actions) => {
   const handleChange = event => {
-    dispatch({
-      type: 'SET_NAME',
-      payload: event.target.value
-    });
+    actions.setName(event.target.value)
   }
 
   return (

@@ -1,7 +1,7 @@
 import { parse, exec, match } from 'matchit';
 
 export class Router {
-  constructor(type = 'hash') {
+  constructor(type = 'history') {
     this.type = type;
     this.routes = [];
     this.handlers = {};
