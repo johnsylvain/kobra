@@ -23,9 +23,9 @@ describe('[api] Kobra', function () {
     const initialState = { foo: 'bar' };
     const actions = {};
 
-    app.setStore(actions, initialState);
+    app.store(actions, initialState);
 
-    expect(app.store.getState()).toHaveProperty('foo', 'bar');
+    expect(app.__s.getState()).toHaveProperty('foo', 'bar');
   });
 
   it('dispatches actions', () => {
@@ -34,9 +34,9 @@ describe('[api] Kobra', function () {
       test: () => ({ test: 'test' })
     };
 
-    app.setStore(actions, initialState);
-    app.store.actions.test();
-    expect(app.store.getState()).toHaveProperty('test', 'test');
+    app.store(actions, initialState);
+    app.__s.actions.test();
+    expect(app.__s.getState()).toHaveProperty('test', 'test');
   });
 
   it('dispatches actions that updates state', () => {
@@ -45,9 +45,9 @@ describe('[api] Kobra', function () {
       inc: () => state => ({ count: state.count + 1 })
     };
 
-    app.setStore(actions, initialState);
-    app.store.actions.inc();
-    expect(app.store.getState()).toHaveProperty('count', 1);
+    app.store(actions, initialState);
+    app.__s.actions.inc();
+    expect(app.__s.getState()).toHaveProperty('count', 1);
   });
 
   it('dispatches async actions', () => {
@@ -61,11 +61,11 @@ describe('[api] Kobra', function () {
       }
     };
 
-    app.setStore(actions, initialState);
-    app.store.actions.getData();
+    app.store(actions, initialState);
+    app.__s.actions.getData();
 
     setTimeout(() => {
-      expect(app.store.getState()).toHaveProperty('data', 'data');
+      expect(app.__s.getState()).toHaveProperty('data', 'data');
     });
   });
 
@@ -76,19 +76,34 @@ describe('[api] Kobra', function () {
       test: () => ({ test: 'test' })
     };
 
-    app.setStore(actions, initialState);
-    app.store.actions.test();
+    app.store(actions, initialState);
+    app.__s.actions.test();
 
     setTimeout(() => {
       expect(spy).toHaveBeenCalled();
     });
   });
 
-  it('calls the run handler on mount', () => {
+  it('calls the load handler on mount', () => {
     spy = jest.fn();
-    app.run(spy);
+    app.on('load', spy);
     app.mount({});
 
     expect(spy).toHaveBeenCalled();
+  });
+
+  it('calls the state change handler on state change', () => {
+    spy = jest.fn();
+    app.on('state', spy);
+
+    const initialState = {};
+    const actions = {
+      test: () => ({ test: 'test' })
+    };
+
+    app.store(actions, initialState);
+    app.__s.actions.test();
+
+    expect(spy).toHaveBeenCalledWith({ test: 'test' });
   });
 });

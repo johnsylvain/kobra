@@ -5,54 +5,63 @@ import { Router } from './router/router';
 
 export class Kobra {
   constructor() {
-    this.container = undefined;
-    this.store = undefined;
-    this.runHandlers = [];
-    this.router = new Router('history');
+    this.__c = undefined; // app container
+    this.__s = undefined; // state store
+    // events
+    this.__e = {
+      load: [],
+      route: [],
+      state: []
+    };
+    this.__r = new Router('history'); // router
   }
 
   render() {
-    this.router.getCurrent((handler, params) => {
-      const actions = this.store ? this.store.actions : {};
-      const state = this.store ? this.store.getState() : {};
+    this.__r.getCurrent((handler, params) => {
+      const actions = this.__s ? this.__s.actions : {};
+      const state = this.__s ? this.__s.getState() : {};
       const view = handler(state, actions);
 
       if (params) {
         extend(state, { params });
       }
 
-      render(view, this.container);
+      render(view, this.__c);
     });
   }
 
-  setStore(actions, initialState) {
-    this.store = createStore(actions, initialState);
-    this.store.subscribe(() => {
+  store(actions, initialState) {
+    this.__s = createStore(actions, initialState);
+    this.__s.subscribe(() => {
       setTimeout(() => this.render());
+      this.__e.state.map(fn => fn(this.__s.getState(), this.__s.actions));
     });
     return this;
   }
 
   route(pattern, handler) {
-    this.router.on(pattern, handler);
+    this.__r.on(pattern, handler);
     return this;
   }
 
-  run(fn) {
-    this.runHandlers.push(fn);
+  on(name, fn) {
+    if (name in this.__e) {
+      this.__e[name].push(fn);
+    }
     return this;
   }
 
   mount(parent) {
-    this.container = parent;
-    this.router.listen(this.render.bind(this));
+    this.__c = parent;
+    const actions = this.__s ? this.__s.actions : {};
+    const state = this.__s ? this.__s.getState() : {};
 
-    if (this.runHandlers.length) {
-      const actions = this.store ? this.store.actions : {};
-      this.runHandlers.forEach(handler => {
-        handler(actions);
-      });
-    }
+    this.__r.listen(() => {
+      this.__e.route.map(fn => fn(state, actions));
+      this.render();
+    });
+
+    this.__e.load.map(fn => fn(state, actions));
   }
 }
 

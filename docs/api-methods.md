@@ -14,9 +14,9 @@ app.route('/about', () => <About />);
 app.route('/item/:id', state => <Item id={state.params.id} />);
 ```
 
-## app.setStore
+## app.store
 
-`setStore(actions: object, initialState: object)`
+`store(actions: object, initialState: object)`
 
 > `actions` is an object that contains all actions for an application. An action is a function that returns a partial copy of the state that needs to be updated.
 
@@ -28,24 +28,32 @@ const actions = {
   set: value => ({ count: value })
 }
 
-app.setStore(actions, intiailState);
+app.store(actions, initialState);
 ```
 
-## app.run
+## app.on
 
-`run(handler: Function)`
+`on(event: string, handler: Function)`
 
-> Execute a block of code when the application is mounted. The `handler` receives one argument which is an object of all actions that can be used for triggering state updates.
+> Listen for `load`, `state`, and `route` events. All handler functions accept `state` and `actions` as arguments.
 >
-> This method is particularly useful for loading asynchronous data that is needed on all routes.
+> `load` will be called once with the app is mounted.
+>
+> `state` will be called when state changes.
+>
+> `route` will be called when the route changes.
 
 ```js
-app.setStore(
+app.store(
   { init: items => ({ items })},
   { items: [] }
 );
 
-app.run(actions => {
+app.on('state', state => {
+  saveToLocalStorage(state);
+});
+
+app.on('load', (state, actions) => {
   fetch('/api')
     .then(res => res.json())
     .then(json => {

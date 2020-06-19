@@ -1,6 +1,6 @@
 {
   "name": "kobra",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "author": "John Sylvain <john.n.sylvain@gmail.com>",
   "license": "MIT",
   "description": "Minimal JavaScript Framework",
