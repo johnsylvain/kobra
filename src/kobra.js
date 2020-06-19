@@ -1,39 +1,35 @@
+import { createStore } from 'staten';
 import { extend } from './util';
 import { render } from './render';
 import { Router } from './router/router';
 
 export class Kobra {
-  constructor({ router } = {}) {
+  constructor() {
     this.container = undefined;
-    this.state = undefined;
-    this.dispatch = undefined;
-    this.reducers = [];
+    this.store = undefined;
     this.runHandlers = [];
-    this.router = new Router(router);
+    this.router = new Router('history');
   }
 
   render() {
     this.router.getCurrent((handler, params) => {
+      const actions = this.store ? this.store.actions : {};
+      const state = this.store ? this.store.getState() : {};
+      const view = handler(state, actions);
+
       if (params) {
-        this.state = extend(this.state || {}, { params });
+        extend(state, { params });
       }
 
-      render(handler(this.state, this.dispatch), this.container);
+      render(view, this.container);
     });
   }
 
-  use(reducer) {
-    this.reducers.push(reducer);
-    this.reducers.forEach(reducer => {
-      if (this.state) extend(this.state, reducer(undefined, {}));
-      else this.state = reducer(undefined, {});
-    });
-    this.dispatch = action => {
-      this.reducers.forEach(reducer => {
-        extend(this.state, reducer(this.state, action));
-      });
+  setStore(actions, initialState) {
+    this.store = createStore(actions, initialState);
+    this.store.subscribe(() => {
       setTimeout(() => this.render());
-    };
+    });
     return this;
   }
 
@@ -44,6 +40,7 @@ export class Kobra {
 
   run(fn) {
     this.runHandlers.push(fn);
+    return this;
   }
 
   mount(parent) {
@@ -51,9 +48,12 @@ export class Kobra {
     this.router.listen(this.render.bind(this));
 
     if (this.runHandlers.length) {
+      const actions = this.store ? this.store.actions : {};
       this.runHandlers.forEach(handler => {
-        handler(this.dispatch);
+        handler(actions);
       });
     }
   }
 }
+
+export const kobra = () => new Kobra();

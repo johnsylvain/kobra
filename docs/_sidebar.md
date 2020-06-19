@@ -18,5 +18,4 @@
 
 - Routing
   - [Route pattern matching](route-params.md)
-  - [Hash routing](hash-routing.md)
   - [Browser routing](browser-routing.md)

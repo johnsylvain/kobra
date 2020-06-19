@@ -1,6 +1,6 @@
 {
   "name": "kobra",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "author": "John Sylvain <john.n.sylvain@gmail.com>",
   "license": "MIT",
   "description": "Minimal JavaScript Framework",
@@ -43,7 +43,8 @@
     "rollup-plugin-node-resolve": "^4.0.1"
   },
   "dependencies": {
-    "matchit": "^1.0.7"
+    "matchit": "^1.0.7",
+    "staten": "^0.1.0"
   },
   "repository": {
     "type": "git",
