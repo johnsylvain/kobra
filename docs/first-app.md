@@ -108,7 +108,7 @@ const actions = {
   increment: () => state => ({ counter: state.counter + 1 })
 }
 
-app.setStore(actions, initialState);
+app.store(actions, initialState);
 
 app.route('/', (state, actions) => {
   return (
@@ -134,7 +134,7 @@ const actions = {
   increment: () => state => ({ counter: state.counter + 1 })
 }
 
-app.setStore(actions, initialState);
+app.store(actions, initialState);
 
 app.route('/', (state, actions) => {
   return (

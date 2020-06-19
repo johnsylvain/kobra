@@ -1,7 +1,7 @@
 import { isEvent } from './util';
 
 export function createElement(vnode, isSvg) {
-  let node =
+  const node =
     typeof vnode === 'string' || typeof vnode === 'number'
       ? document.createTextNode(vnode)
       : (isSvg = isSvg || vnode.nodeName === 'svg')
