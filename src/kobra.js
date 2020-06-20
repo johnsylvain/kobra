@@ -20,11 +20,8 @@ export class Kobra {
     this.__r.getCurrent((handler, params) => {
       const actions = this.__s ? this.__s.actions : {};
       const state = this.__s ? this.__s.getState() : {};
+      extend(state, { params: params || {} });
       const view = handler(state, actions);
-
-      if (params) {
-        extend(state, { params });
-      }
 
       render(view, this.__c);
     });
