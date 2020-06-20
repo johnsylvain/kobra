@@ -1,5 +1,5 @@
+/* eslint-disable no-undef */
 import { h } from '../src/h';
-import { Link } from '../src/router/link';
 
 describe('[jsx] h', () => {
   it('creates a vdom node', () => {
@@ -23,14 +23,31 @@ describe('[jsx] h', () => {
   it('supports nested children', () => {
     const m = x => h(x);
 
-    expect(h('foo', null, h('a'), [m('b'), m('c')], m('d'))).toHaveProperty(
+    expect(h('foo', null, h('l'), [m('b'), m('c')], m('d'))).toHaveProperty(
       'children',
-      ['a', 'b', 'c', 'd'].map(m)
+      ['l', 'b', 'c', 'd'].map(m)
     );
   });
 
-  it('renders a link if an anchor tag is passed', () => {
-    const node = h('a', { href: '/test' });
-    expect(node.nodeName).toEqual(Link);
+  describe('when vnode is an anchor tag', () => {
+    beforeEach(() => {
+      global.dispatchEvent = jest.fn();
+    });
+
+    it('attaches an event listener', () => {
+      const link = h('a', { href: '/' }, 'Text');
+      expect(link.attributes.onClick).toBeInstanceOf(Function);
+    });
+
+    it('dispatches a popstate event for internal links', () => {
+      const link = h('a', { href: '/' }, 'Text');
+      link.attributes.onClick(new Event('click'));
+      expect(global.dispatchEvent).toHaveBeenCalled();
+    });
+
+    it('does not dispatch a popstate event for external links', () => {
+      const link = h('a', { href: 'https://example.com' }, 'Text');
+      expect(link.attributes.onClick).not.toBeDefined();
+    });
   });
 });

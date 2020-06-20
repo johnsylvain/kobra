@@ -1,7 +1,7 @@
 import { createStore } from 'staten';
 import { extend } from './util';
 import { render } from './render';
-import { Router } from './router/router';
+import { Router } from './router';
 
 export class Kobra {
   constructor() {
