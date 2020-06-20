@@ -104,6 +104,6 @@ describe('[api] Kobra', function () {
     app.store(actions, initialState);
     app.__s.actions.test();
 
-    expect(spy).toHaveBeenCalledWith({ test: 'test' });
+    expect(spy).toHaveBeenCalledWith({ test: 'test' }, app.__s.actions);
   });
 });
