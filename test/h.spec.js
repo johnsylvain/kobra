@@ -1,4 +1,5 @@
 import { h } from '../src/h';
+import { Link } from '../src/router/link';
 
 describe('[jsx] h', () => {
   it('creates a vdom node', () => {
@@ -26,5 +27,10 @@ describe('[jsx] h', () => {
       'children',
       ['a', 'b', 'c', 'd'].map(m)
     );
+  });
+
+  it('renders a link if an anchor tag is passed', () => {
+    const node = h('a', { href: '/test' });
+    expect(node.nodeName).toEqual(Link);
   });
 });

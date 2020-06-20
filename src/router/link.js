@@ -1,25 +1,27 @@
 import { h } from '../h';
 
-export const route = to => {
-  window.history.pushState(undefined, undefined, to);
+export const route = url => {
+  window.history.pushState(undefined, undefined, url);
   window.dispatchEvent(new PopStateEvent('popstate'));
 };
 
-const handleClick = to => event => {
-  event.preventDefault();
-  route(to);
+const handleClick = url => event => {
+  if (!/^https?:\/\//.test(url)) {
+    event.preventDefault();
+    route(url);
+  }
 };
 
-export const Link = ({ to, className, activeClass }, children) => {
+export const Link = ({ href, className, activeClass, ...rest }, children) => {
   return h(
     'a',
-    {
-      href: to,
-      className: [className, window.location.pathname === to && activeClass]
+    Object.assign({}, rest, {
+      href,
+      className: [className, window.location.pathname === href && activeClass]
         .filter(Boolean)
         .join(' '),
-      onClick: handleClick(to)
-    },
+      onClick: handleClick(href)
+    }),
     children
   );
 };
