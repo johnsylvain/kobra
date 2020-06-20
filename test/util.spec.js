@@ -1,4 +1,4 @@
-import { extend, isEvent } from '../src/util';
+import { extend, isEvent, createInternalLinkAttributes } from '../src/util';
 
 describe('[util] isEvent', () => {
   it('determines if event', () => {
@@ -19,5 +19,29 @@ describe('[util] extend', () => {
       d: 3
     };
     expect(extend(obj, { a: { b: 5 } })).not.toHaveProperty('a.c');
+  });
+});
+
+describe('[util] createInternalLinkAttributes', () => {
+  it('does nothing if no href is provided', () => {
+    const attributes = {};
+    const response = createInternalLinkAttributes(attributes);
+    expect(response).toBe(attributes);
+  });
+
+  it('does nothing if an external link is provided', () => {
+    const attributes = {
+      href: 'https://example.com'
+    };
+    const response = createInternalLinkAttributes(attributes);
+    expect(response).toBe(attributes);
+  });
+
+  it('attaches a click handler if an internal link is provided', () => {
+    const attributes = {
+      href: '/about'
+    };
+    const response = createInternalLinkAttributes(attributes);
+    expect(response.onClick).toBeInstanceOf(Function);
   });
 });

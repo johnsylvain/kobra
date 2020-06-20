@@ -1,5 +1,10 @@
 import { parse, exec, match } from 'matchit';
 
+export const route = url => {
+  window.history.pushState(undefined, undefined, url);
+  window.dispatchEvent(new PopStateEvent('popstate'));
+};
+
 export class Router {
   constructor(type = 'history') {
     this.type = type;
